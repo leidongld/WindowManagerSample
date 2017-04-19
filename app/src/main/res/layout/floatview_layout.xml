@@ -3,10 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    android:background="#FFFFFF">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_margin="16dp">
 
     <!--时间-->
     <TextView
@@ -20,14 +19,20 @@
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/cat" />
+        android:layout_height="200dp"/>
 
-    <Button
-        android:id="@+id/bt"
+    <!--获取通知内容-->
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button"
-        android:textAllCaps="false" />
+        android:text=""
+        android:textSize="30sp"
+        android:textColor="#FFFFFF"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

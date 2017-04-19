@@ -1,18 +1,24 @@
 package com.example.leidong.windowmanagersample;
 
 import android.annotation.SuppressLint;
+import android.app.WallpaperManager;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by leidong on 2017/4/12.
@@ -26,23 +32,33 @@ public class FloatView extends LinearLayout{
     private float mTouchStartY;
     private float x;
     private float y;
-    private IFloatViewClick listener;
+    private IFloatViewClick floatViewClickListener;
     private boolean isAllowTouch=true;
 
     //FloatView中的相关控件
     private TextView time;
     private ImageView image;
-    private Button bt;
+    private ListView listView;
 
-    //构造器1
+    /**
+     * 构造器1
+     * @param context
+     * @param layoutId
+     */
     public FloatView(Context context, int layoutId) {
         super(context);
         View view = LayoutInflater.from(getContext()).inflate(layoutId, null);
+        //配置悬浮窗
         setWindowManagerParams(view);
+        //获取并填充控件
         initAndOperate();
     }
 
-    //构造器2
+    /**
+     * 构造器2
+     * @param context
+     * @param childView
+     */
     public FloatView(Context context, View childView) {
         super(context);
         setWindowManagerParams(childView);
@@ -53,16 +69,19 @@ public class FloatView extends LinearLayout{
      * @param view
      */
     private void setWindowManagerParams(View view) {
+        //配置背景
+        configBackground(view);
+
         windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         windowManagerParams = new WindowManager.LayoutParams();
         //设置你要添加控件的类型，TYPE_ALERT需要申明权限，Toast不需要，在某些定制系统中会禁止悬浮框显示，所以最后用TYPE_TOAST
-        windowManagerParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+        windowManagerParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         //设置控件在坐标计算规则，相当于屏幕左上角
         windowManagerParams.gravity =  Gravity.TOP | Gravity.LEFT;
         windowManagerParams.format = PixelFormat.RGBA_8888;
         windowManagerParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         windowManagerParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        windowManagerParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        windowManagerParams.height = WindowManager.LayoutParams.MATCH_PARENT;
         windowManagerParams.x = 0;
         windowManagerParams.y = 0;
         if (view != null) {
@@ -71,20 +90,50 @@ public class FloatView extends LinearLayout{
     }
 
     /**
+     * 配置悬浮窗背景
+     * @param view
+     */
+    private void configBackground(View view) {
+        WallpaperManager wallpaperManager = WallpaperManager
+                .getInstance(MyApplication.getContext());
+        //获取当前壁纸
+        Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        // 将Drawable,转成Bitmap
+        Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
+        // 设置 背景
+        //view.setBackgroundDrawable(new BitmapDrawable(bm));
+        view.setBackground(wallpaperDrawable);
+    }
+
+    /**
      * 获取控件并设置相关操作
      */
     private void initAndOperate() {
         time = (TextView) findViewById(R.id.time);
         image = (ImageView) findViewById(R.id.image);
-        bt = (Button) findViewById(R.id.bt);
+        listView = (ListView) findViewById(R.id.listView);
     }
 
     /**
-     * 悬浮窗点击监听
-     * @param listener
+     * 填充FloatView的时间
+     * @param timeStr
      */
-    public void setFloatViewClickListener(IFloatViewClick listener) {
-        this.listener = listener;
+    public void setTime(String timeStr){
+        time.setText(timeStr);
+    }
+
+    /**
+     * 填充FloatView的图片
+     */
+    public void setImage(String imageUri){
+        ImageLoader.getInstance().displayImage(imageUri, image, MyApplication.getOptions());
+    }
+
+    /**
+     * 通知填充ListView
+     */
+    public void setListView(){
+
     }
 
     /**
@@ -172,7 +221,6 @@ public class FloatView extends LinearLayout{
             case MotionEvent.ACTION_DOWN:
                 mTouchStartX = (int) event.getRawX() - this.getMeasuredWidth() / 2;
                 mTouchStartY = (int) event.getRawY() - this.getMeasuredHeight() / 2 - 25;
-
                 return true;
             case MotionEvent.ACTION_MOVE:
                 windowManagerParams.x = (int) event.getRawX() - this.getMeasuredWidth() / 2;
@@ -181,25 +229,32 @@ public class FloatView extends LinearLayout{
                 // 刷新
                 windowManager.updateViewLayout(this, windowManagerParams);
                 return true;
-            case MotionEvent.ACTION_UP:
+            /*case MotionEvent.ACTION_UP:
                 y = (int) event.getRawY() - this.getMeasuredHeight() / 2 - 25;
                 x = (int) event.getRawX() - this.getMeasuredWidth() / 2;
                 if (Math.abs(y - mTouchStartY) > 10 || Math.abs(x - mTouchStartX) > 10) {
                     windowManager.updateViewLayout(this, windowManagerParams);
                 }
                 else {
-                    if (listener != null) {
-                        listener.onFloatViewClick();
+                    if (floatViewClickListener != null) {
+                        floatViewClickListener.onFloatViewClick();
                     }
                 }
-                return true;
+                return true;*/
             default:
                 break;
         }
         return false;
     }
 
+    /**
+     * FloatView点击的监听
+     */
     public interface IFloatViewClick {
         void onFloatViewClick();
+    }
+
+    public void setFloatViewClickListener(IFloatViewClick listener) {
+        this.floatViewClickListener = listener;
     }
 }
