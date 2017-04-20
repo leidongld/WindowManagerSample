@@ -12,6 +12,11 @@ public class Constants {
 
     //FloatView滑动的最短距离
     public static final int minFloatDistance = 200;
-    //FloatView滑动的最快速度
-    public static final int maxFloatVelocity = 200;
+
+    public static final String UPDATE = "com.example.leidong.windowmanagersample.NOTIFICATION_LISTENER_EXAMPLE";
+
+    public static final String COMMAND = "com.example.leidong.windowmanagersample.COMMAND_NOTIFICATION_LISTENER_SERVICE";
+    public static final String COMMAND_EXTRA = "command";
+    public static final String CANCEL_ALL = "clear";
+    public static final String GET_LIST = "show";
 }

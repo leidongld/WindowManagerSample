@@ -3,9 +3,7 @@ package com.example.leidong.windowmanagersample;
 import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.Gravity;
@@ -18,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.leidong.windowmanagersample.utils.ListViewAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -75,7 +74,7 @@ public class FloatView extends LinearLayout{
         windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         windowManagerParams = new WindowManager.LayoutParams();
         //设置你要添加控件的类型，TYPE_ALERT需要申明权限，Toast不需要，在某些定制系统中会禁止悬浮框显示，所以最后用TYPE_TOAST
-        windowManagerParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        windowManagerParams.type = WindowManager.LayoutParams.TYPE_PRIORITY_PHONE;
         //设置控件在坐标计算规则，相当于屏幕左上角
         windowManagerParams.gravity =  Gravity.TOP | Gravity.LEFT;
         windowManagerParams.format = PixelFormat.RGBA_8888;
@@ -98,10 +97,7 @@ public class FloatView extends LinearLayout{
                 .getInstance(MyApplication.getContext());
         //获取当前壁纸
         Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        // 将Drawable,转成Bitmap
-        Bitmap bm = ((BitmapDrawable) wallpaperDrawable).getBitmap();
         // 设置 背景
-        //view.setBackgroundDrawable(new BitmapDrawable(bm));
         view.setBackground(wallpaperDrawable);
     }
 
@@ -130,10 +126,11 @@ public class FloatView extends LinearLayout{
     }
 
     /**
-     * 通知填充ListView
+     * 设置FloatView中的通知条目列表
+     * @param listViewAdapter
      */
-    public void setListView(){
-
+    public void setNotificationsList(ListViewAdapter listViewAdapter) {
+        listView.setAdapter(listViewAdapter);
     }
 
     /**

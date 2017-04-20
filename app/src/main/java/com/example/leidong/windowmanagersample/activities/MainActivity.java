@@ -14,15 +14,19 @@ import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
-
+import com.example.leidong.windowmanagersample.Constants;
 import com.example.leidong.windowmanagersample.MyApplication;
 import com.example.leidong.windowmanagersample.R;
 import com.example.leidong.windowmanagersample.services.MainService;
-
+import com.example.leidong.windowmanagersample.services.NotificationMonitor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+/**
+ * Created by leidong on 2017/04/14
+ */
 public class MainActivity extends Activity {
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +39,14 @@ public class MainActivity extends Activity {
     /**
      * 检查并配置相关权限
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     private void checkAndConfigurePermissions() {
         //打开SYSTEM_OVERLAY_WINDOW的权限
         openOverlayWindow();
         //引导用户关闭系统锁屏
         closeSystemLockScreen();
         //打开NotificationListen功能，引导用户打开ACTION_NOTIFICATION_LISTENER_SETTINGS权限
-        //openNotificationListen();
-        //
+        openNotificationListen();
     }
 
     /**
@@ -52,7 +56,9 @@ public class MainActivity extends Activity {
     private void openNotificationListen() {
         //检查到通知栏使用权是否已经拿到
         boolean isNotificationListen = isNotificationListenEnabled();
-        startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
+        if (!isNotificationListen) {
+            startActivity(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS));
+        }
     }
 
     /**
@@ -98,14 +104,19 @@ public class MainActivity extends Activity {
         }
     }
 
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @SuppressLint("NewApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 10) {
             if (MyApplication.getAPIVersion() >= 23) {
                 if (!Settings.canDrawOverlays(this)) {
-                    // SYSTEM_ALERT_WINDOW permission not granted...
-                    Toast.makeText(MainActivity.this,"not granted",Toast.LENGTH_SHORT);
+                    Toast.makeText(MainActivity.this,"SYSTEM_ALERT_WINDOW 权限未获取",Toast.LENGTH_SHORT);
                 }
             }
         }
@@ -118,15 +129,18 @@ public class MainActivity extends Activity {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.bt_remove:
-                Intent stopIntent = new Intent(MainActivity.this, MainService.class);
-                stopService(stopIntent);
-                //floatView.removeFromWindow();
+                Intent stopIntent1 = new Intent(MainActivity.this, MainService.class);
+                Intent stopIntent2 = new Intent(MainActivity.this, NotificationMonitor.class);
+                stopService(stopIntent1);
+                stopService(stopIntent2);
                 break;
             case R.id.bt_create:
-                Intent startIntent = new Intent(MainActivity.this, MainService.class);
-                startService(startIntent);
-                //floatView.addToWindow();
-                break;
+                Intent startIntent1 = new Intent(MainActivity.this, MainService.class);
+                startService(startIntent1);
+
+                Intent startIntent2 = new Intent(Constants.COMMAND);
+                startIntent2.putExtra(Constants.COMMAND_EXTRA, Constants.GET_LIST);
+                sendBroadcast(startIntent2);
             default:
                 break;
         }
