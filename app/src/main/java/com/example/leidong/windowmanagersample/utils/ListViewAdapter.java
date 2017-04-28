@@ -62,8 +62,10 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         NotificationInfos info = list.get(position);
-        viewHolder.title.setText(info.title);
-        viewHolder.text.setText(info.text);
+        if(viewHolder.title != null && viewHolder.text != null) {
+            viewHolder.title.setText(info.title);
+            viewHolder.text.setText(info.text);
+        }
         return convertView;
     }
 

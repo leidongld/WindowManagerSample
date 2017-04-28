@@ -10,10 +10,8 @@ import android.os.Build;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.support.annotation.RequiresApi;
-import android.widget.Toast;
 
 import com.example.leidong.windowmanagersample.Constants;
-import com.example.leidong.windowmanagersample.MyApplication;
 
 /**
  * Created by leidong on 2017/4/13.
@@ -64,12 +62,11 @@ public class NotificationMonitor extends NotificationListenerService {
             String command = intent.getStringExtra(Constants.COMMAND_EXTRA);
             //Toast.makeText(MyApplication.getContext(), "command", Toast.LENGTH_SHORT).show();
             //清除所有通知
-            if(command.equals(Constants.CANCEL_ALL)){
+            if(command.equals(Constants.CLEAR_ALL)){
                 NotificationMonitor.this.cancelAllNotifications();
             }
             //显示所有通知
-            else if(command.equals(Constants.GET_LIST)){
-                Toast.makeText(MyApplication.getContext(), command, Toast.LENGTH_SHORT).show();
+            else if(command.equals(Constants.SHOW_ALL)){
                 StatusBarNotification[] sbns = NotificationMonitor.this.getActiveNotifications();
                 for(int i = 0; i < sbns.length; i++){
                     Intent intent1 = new Intent(Constants.UPDATE);

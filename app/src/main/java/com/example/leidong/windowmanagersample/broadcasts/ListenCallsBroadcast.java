@@ -13,20 +13,21 @@ import com.example.leidong.windowmanagersample.services.MainService;
  */
 
 public class ListenCallsBroadcast extends BroadcastReceiver {
+    private static final String TAG = "ListenCallsBroadcast";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if(action.equals(Constants.PHONE_CHANGED)){
-            doReceivePhone(context, intent);
+            doReceivePhone(context);
         }
     }
 
     /**
      *处理电话广播
      * @param context
-     * @param intent
      */
-    public void doReceivePhone(Context context, Intent intent) {
+    public void doReceivePhone(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         int callState = telephonyManager.getCallState();
         switch (callState){

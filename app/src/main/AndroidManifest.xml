@@ -8,15 +8,19 @@
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
     <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/panda"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--主界面-->
         <activity android:name=".activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -25,9 +29,17 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".services.MainService">
+        <!--主Service-->
+        <service android:name=".services.MainService"
+            android:label="MainService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCK_SCREEN"/>
+            </intent-filter>
         </service>
 
+        <!--通知获取Service-->
         <service android:name=".services.NotificationMonitor"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
@@ -35,8 +47,29 @@
             </intent-filter>
         </service>
 
+        <!--LockScreenService-->
+        <service android:name=".services.LockScreenService">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCK_SCREEN"/>
+            </intent-filter>
+        </service>
+
+        <!--电话状态广播-->
         <receiver android:name=".broadcasts.ListenCallsBroadcast">
         </receiver>
-    </application>
 
+        <!--屏幕点亮锁屏广播-->
+        <receiver android:name=".broadcasts.LockScreenReceiver">
+        </receiver>
+
+        <receiver android:name=".services.MainService$NotificationReceiver">
+        </receiver>
+
+        <receiver android:name=".broadcasts.AutoStartBroadcast">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
 </manifest>

@@ -14,11 +14,14 @@ import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
+
 import com.example.leidong.windowmanagersample.Constants;
 import com.example.leidong.windowmanagersample.MyApplication;
 import com.example.leidong.windowmanagersample.R;
+import com.example.leidong.windowmanagersample.services.LockScreenService;
 import com.example.leidong.windowmanagersample.services.MainService;
 import com.example.leidong.windowmanagersample.services.NotificationMonitor;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
@@ -26,6 +29,7 @@ import java.lang.reflect.Method;
  * Created by leidong on 2017/04/14
  */
 public class MainActivity extends Activity {
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -128,19 +132,25 @@ public class MainActivity extends Activity {
      */
     public void onClick(View view){
         switch (view.getId()){
+            case R.id.bt_create:
+                Intent startIntent1 = new Intent(MainActivity.this, MainService.class);
+                startService(startIntent1);
+
+                Intent startIntent2 = new Intent(Constants.COMMAND);
+                startIntent2.putExtra(Constants.COMMAND_EXTRA, Constants.SHOW_ALL);
+                sendBroadcast(startIntent2);
+
+                Intent startIntent3 = new Intent(MainActivity.this, LockScreenService.class);
+                startService(startIntent3);
+
+                finish();
+                break;
             case R.id.bt_remove:
                 Intent stopIntent1 = new Intent(MainActivity.this, MainService.class);
                 Intent stopIntent2 = new Intent(MainActivity.this, NotificationMonitor.class);
                 stopService(stopIntent1);
                 stopService(stopIntent2);
                 break;
-            case R.id.bt_create:
-                Intent startIntent1 = new Intent(MainActivity.this, MainService.class);
-                startService(startIntent1);
-
-                Intent startIntent2 = new Intent(Constants.COMMAND);
-                startIntent2.putExtra(Constants.COMMAND_EXTRA, Constants.GET_LIST);
-                sendBroadcast(startIntent2);
             default:
                 break;
         }

@@ -37,7 +37,7 @@ public class MyApplication extends Application {
 
     /**
      * 获取全局Context
-     * @return
+     * @return context
      */
     public static Context getContext(){
         return context;
@@ -45,12 +45,16 @@ public class MyApplication extends Application {
 
     /**
      * 获取DisplayImageOptions
-     * @return
+     * @return options
      */
     public static DisplayImageOptions getOptions(){
         return options;
     }
 
+    /**
+     * 获取当前API版本号
+     * @return apiVersion
+     */
     public static int getAPIVersion(){
         return apiVersion;
     }

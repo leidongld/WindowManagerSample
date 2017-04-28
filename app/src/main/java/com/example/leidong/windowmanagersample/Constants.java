@@ -7,6 +7,9 @@ import android.telephony.TelephonyManager;
  */
 
 public class Constants {
+    public static final String LOCK_SCREEN_ACTION = "android.intent.action.LOCK_SCREEN";
+    public static final String AUTO_START_ACTION = "android.intent.action.BOOT_COMPLETED";
+
     public static final String IMAGE_URL = "http://rescdn.qqmail.com/dyimg/20140630/7D38689E0A7A.jpg";
     public static final String PHONE_CHANGED = TelephonyManager.ACTION_PHONE_STATE_CHANGED;
 
@@ -17,6 +20,6 @@ public class Constants {
 
     public static final String COMMAND = "com.example.leidong.windowmanagersample.COMMAND_NOTIFICATION_LISTENER_SERVICE";
     public static final String COMMAND_EXTRA = "command";
-    public static final String CANCEL_ALL = "clear";
-    public static final String GET_LIST = "show";
+    public static final String CLEAR_ALL = "clear";
+    public static final String SHOW_ALL = "show";
 }
