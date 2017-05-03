@@ -18,7 +18,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.leidong.windowmanagersample.Constants;
-import com.example.leidong.windowmanagersample.FloatView;
+import com.example.leidong.windowmanagersample.floatview.FloatView;
 import com.example.leidong.windowmanagersample.MyApplication;
 import com.example.leidong.windowmanagersample.R;
 import com.example.leidong.windowmanagersample.broadcasts.ListenCallsBroadcast;
@@ -143,26 +143,24 @@ public class MainService extends Service{
         });
 
         floatView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    x0 = event.getX();
-                    y0 = event.getY();
+                    x0 = event.getRawX();
+                    y0 = event.getRawY();
                 }
                 if(event.getAction() == MotionEvent.ACTION_UP){
-                    x1 = event.getX();
-                    y1 = event.getY();
-                    if(-1*(y1-y0) >= Constants.minFloatDistance && -1*(x1-x0) <= 100){
+                    x1 = event.getRawX();
+                    y1 = event.getRawY();
+                    if(-1*(y1-y0) >= Constants.minFloatDistance/2 && -1*(x1-x0) <= 100){
                         floatView.removeFromWindow();
-                        /*****************************************/
                         openLockScreenService();
-                        /*****************************************/
                     }
                 }
                 return false;
             }
         });
     }
+
 
     /**
      * 初始化通知接收广播
@@ -178,7 +176,8 @@ public class MainService extends Service{
      * 填充FloatView中的各种控件
      */
     private void fillComponentsOfFloatView() {
-        floatView.configTime(TimeUtil.getTime());
+        floatView.configTime1(TimeUtil.getTime(), "param");
+        floatView.comfigTime2(TimeUtil.getCurDayTime());
         floatView.configImage(Constants.IMAGE_URL);
         floatView.configNotificationList(listViewAdapter);
     }

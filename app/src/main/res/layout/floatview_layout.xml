@@ -6,33 +6,37 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp">
 
-    <!--时间-->
+    <!--时间1-->
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/time1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="100sp"
+        android:gravity="bottom|center_horizontal"
         android:textColor="@color/white"
+        android:textSize="100sp" />
+
+    <TextView
+        android:id="@+id/time2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
         android:gravity="center_horizontal"/>
 
     <!--广告图-->
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"/>
 
-    <!--获取通知内容-->
-    <TextView
-        android:id="@+id/textView2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="30sp"
-        android:textColor="#FFFFFF"/>
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="#00000000"/>
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="#00000000"/>
+    </LinearLayout>
 </LinearLayout>

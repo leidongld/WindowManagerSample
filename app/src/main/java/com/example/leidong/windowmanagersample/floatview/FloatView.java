@@ -1,21 +1,27 @@
-package com.example.leidong.windowmanagersample;
+package com.example.leidong.windowmanagersample.floatview;
 
 import android.annotation.SuppressLint;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.leidong.windowmanagersample.MyApplication;
+import com.example.leidong.windowmanagersample.R;
 import com.example.leidong.windowmanagersample.utils.ListViewAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -28,10 +34,9 @@ public class FloatView extends LinearLayout{
     private WindowManager.LayoutParams windowManagerParams;
     private WindowManager windowManager;
 
-    private boolean isAllowTouch=true;
-
     //FloatView中的相关控件
-    private TextView time;
+    private TextView time1;
+    private TextView time2;
     private ImageView image;
     private ListView listView;
 
@@ -92,17 +97,34 @@ public class FloatView extends LinearLayout{
      * 获取控件并设置相关操作
      */
     private void initAndOperate() {
-        time = (TextView) findViewById(R.id.time);
+        time1 = (TextView) findViewById(R.id.time1);
+        time2 = (TextView) findViewById(R.id.time2);
         image = (ImageView) findViewById(R.id.image);
         listView = (ListView) findViewById(R.id.listView);
     }
 
     /**
-     * 填充FloatView的时间
+     * 填充FloatView的时间1
      * @param timeStr timeStr
      */
-    public void configTime(String timeStr){
-        time.setText(timeStr);
+    public void configTime1(String timeStr, final String param){
+        time1.setText(timeStr);
+        time1.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("https://www.baidu.com");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                MyApplication.getContext().startActivity(intent);
+            }
+        });
+    }
+
+    /**
+     * 填充FloatView的时间2
+     * @param curDayTime
+     */
+    public void comfigTime2(String curDayTime) {
+        time2.setText(curDayTime);
     }
 
     /**
@@ -110,6 +132,12 @@ public class FloatView extends LinearLayout{
      */
     public void configImage(String imageUri){
         ImageLoader.getInstance().displayImage(imageUri, image, MyApplication.getOptions());
+        image.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MyApplication.getContext(), "image click操作写在这里", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
@@ -118,6 +146,12 @@ public class FloatView extends LinearLayout{
      */
     public void configNotificationList(ListViewAdapter listViewAdapter) {
         listView.setAdapter(listViewAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MyApplication.getContext(), "listView click操作写在这里", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
@@ -145,14 +179,6 @@ public class FloatView extends LinearLayout{
         } else {
             return false;
         }
-    }
-
-    /**
-     * 是否允许点击的标志
-     * @param flag flag
-     */
-    public void setIsAllowTouch(boolean flag){
-        isAllowTouch = flag;
     }
 
     /**
@@ -191,6 +217,6 @@ public class FloatView extends LinearLayout{
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         // TODO Auto-generated method stub
-        return isAllowTouch;
+        return super.onInterceptTouchEvent(ev);
     }
 }
