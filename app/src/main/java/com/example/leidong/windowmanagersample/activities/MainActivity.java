@@ -14,14 +14,12 @@ import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.leidong.windowmanagersample.Constants;
 import com.example.leidong.windowmanagersample.MyApplication;
 import com.example.leidong.windowmanagersample.R;
 import com.example.leidong.windowmanagersample.services.LockScreenService;
 import com.example.leidong.windowmanagersample.services.MainService;
 import com.example.leidong.windowmanagersample.services.NotificationMonitor;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
