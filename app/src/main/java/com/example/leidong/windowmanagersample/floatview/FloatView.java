@@ -16,13 +16,13 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.leidong.windowmanagersample.MyApplication;
 import com.example.leidong.windowmanagersample.R;
 import com.example.leidong.windowmanagersample.utils.ListViewAdapter;
+import com.example.leidong.windowmanagersample.utils.NotificationListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -38,7 +38,7 @@ public class FloatView extends LinearLayout{
     private TextView time1;
     private TextView time2;
     private ImageView image;
-    private ListView listView;
+    private NotificationListView notificationListView;
 
     /**
      * 构造器1
@@ -100,7 +100,7 @@ public class FloatView extends LinearLayout{
         time1 = (TextView) findViewById(R.id.time1);
         time2 = (TextView) findViewById(R.id.time2);
         image = (ImageView) findViewById(R.id.image);
-        listView = (ListView) findViewById(R.id.listView);
+        notificationListView = (NotificationListView) findViewById(R.id.listView);
     }
 
     /**
@@ -145,8 +145,8 @@ public class FloatView extends LinearLayout{
      * @param listViewAdapter listViewAdapter
      */
     public void configNotificationList(ListViewAdapter listViewAdapter) {
-        listView.setAdapter(listViewAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        notificationListView.setAdapter(listViewAdapter);
+        notificationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(MyApplication.getContext(), "listView click操作写在这里", Toast.LENGTH_SHORT).show();

@@ -38,11 +38,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-        <ListView
+
+        <com.example.leidong.windowmanagersample.utils.NotificationListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:cacheColorHint="#00000000"/>
+            android:cacheColorHint="#00000000" />
     </LinearLayout>
 
     <ImageView
